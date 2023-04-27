@@ -6,7 +6,7 @@
 /*   By: bguyot <bguyot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:59:52 by bguyot            #+#    #+#             */
-/*   Updated: 2023/04/26 15:00:19 by bguyot           ###   ########.fr       */
+/*   Updated: 2023/04/27 12:33:08 by bguyot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <string>
 #include <ctime>
 #include <iomanip>
+#include <regex>
 
 class BitcoinExchange
 {

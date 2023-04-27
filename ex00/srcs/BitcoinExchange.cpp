@@ -6,7 +6,7 @@
 /*   By: bguyot <bguyot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:59:33 by bguyot            #+#    #+#             */
-/*   Updated: 2023/04/26 15:00:25 by bguyot           ###   ########.fr       */
+/*   Updated: 2023/04/27 12:32:32 by bguyot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,15 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &rhs)
 bool BitcoinExchange::_is_valid_date(const std::string &date)
 {
     struct tm tm;
-    if (!strptime(date.c_str(), "%Y-%m-%d", &tm))
+    char *time = strptime(date.c_str(), "%Y-%m-%d", &tm);
+    if (!time || *time)
         return (false);
     return (true);
 }
 
 bool BitcoinExchange::_is_valid_rate(const std::string &rate)
 {
-    try
-    {
-        std::stod(rate);
-    }
-    catch (...)
-    {
-        return false;
-    }
-    return true;
+    return (std::regex_match(rate, std::regex("^[0-9]+(\\.[0-9]+)?$")));
 }
 
 void BitcoinExchange::process(const std::string &line)
@@ -93,7 +86,7 @@ void BitcoinExchange::process(const std::string &line)
         std::cout << "Error: not a positive number." << std::endl;
         return;
     }
-    if (nb > 2147483647)
+    if (nb > 1000)
     {
         std::cout << "Error: too large number." << std::endl;
         return;
