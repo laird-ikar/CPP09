@@ -6,7 +6,7 @@
 /*   By: bguyot <bguyot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:06:51 by bguyot            #+#    #+#             */
-/*   Updated: 2023/04/26 15:06:53 by bguyot           ###   ########.fr       */
+/*   Updated: 2023/04/27 12:39:43 by bguyot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 
 #ifndef PMERGEME_HPP
 #define PMERGEME_HPP
+
+#ifndef K
+#define K 1
+#endif
 
 class PmergeMe
 {

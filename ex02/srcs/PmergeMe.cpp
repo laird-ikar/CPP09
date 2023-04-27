@@ -6,7 +6,7 @@
 /*   By: bguyot <bguyot@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:06:23 by bguyot            #+#    #+#             */
-/*   Updated: 2023/04/26 15:06:35 by bguyot           ###   ########.fr       */
+/*   Updated: 2023/04/27 12:40:15 by bguyot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,36 +101,59 @@ void PmergeMe::sort()
     std::cout << "Time to process a range of " << this->_vector.size() << " elements with std::set    -> " << s_us.count() << "us (" << s_ms.count() << " ms)" << std::endl;
 }
 
+/**
+ @brief Perform a merge-insert sort on the given iterator range (vector)
+ */
 std::vector<int> PmergeMe::sort_vector(
     std::vector<int>::iterator begin,
     std::vector<int>::iterator end)
 {
-    if (end - begin <= 1)
-        return std::vector<int>(begin, end);
-    std::vector<int>::iterator middle = begin + (end - begin) / 2;
-    std::vector<int> left = sort_vector(begin, middle);
-    std::vector<int> right = sort_vector(middle, end);
     std::vector<int> result;
-    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(result));
+    if (std::distance(begin, end) > K)
+    {// mergesort
+        std::vector<int>::iterator mid = begin + std::distance(begin, end) / 2;
+        std::vector<int> left = sort_vector(begin, mid);
+        std::vector<int> right = sort_vector(mid, end);
+        std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(result));
+    }
+    else
+    {//insertsort
+        for (std::vector<int>::iterator it = begin; it != end; it++)
+        {
+            std::vector<int>::iterator it2 = result.begin();
+            while (it2 != result.end() && *it2 < *it)
+                it2++;
+            result.insert(it2, *it);
+        }
+    }
     return result;
 }
 
+/**
+ @brief Perform a merge-insert sort on the given iterator range (set)
+ */
 std::set<int> PmergeMe::sort_set(
     std::set<int>::iterator begin,
     std::set<int>::iterator end)
 {
-    if (std::distance(begin, end) <= 1)
-        return std::set<int>(begin, end);
-    std::set<int>::iterator middle = begin;
-    std::set<int>::iterator tmp = begin;
-    while (tmp != end && ++tmp != end)
-    {
-        middle++;
-        tmp++;
-    }
-    std::set<int> left = sort_set(begin, middle);
-    std::set<int> right = sort_set(middle, end);
     std::set<int> result;
-    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::inserter(result, result.begin()));
+    if (std::distance(begin, end) > K)
+    {// mergesort
+        std::set<int>::iterator mid = begin;
+        std::advance(mid, std::distance(begin, end) / 2);
+        std::set<int> left = sort_set(begin, mid);
+        std::set<int> right = sort_set(mid, end);
+        std::merge(left.begin(), left.end(), right.begin(), right.end(), std::inserter(result, result.begin()));
+    }
+    else
+    {//insertsort
+        for (std::set<int>::iterator it = begin; it != end; it++)
+        {
+            std::set<int>::iterator it2 = result.begin();
+            while (it2 != result.end() && *it2 < *it)
+                it2++;
+            result.insert(it2, *it);
+        }
+    }
     return result;
 }
